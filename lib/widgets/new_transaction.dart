@@ -8,6 +8,17 @@ class NewTransaction extends StatelessWidget {
 
   NewTransaction(this._addCallback);
 
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = double.parse(amountController.text);
+
+    if (enteredTitle.isEmpty || enteredAmount <= 0) {
+      return;
+    }
+
+    _addCallback(enteredTitle, enteredAmount);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -22,6 +33,7 @@ class NewTransaction extends StatelessWidget {
                 labelText: 'Title',
               ),
               controller: titleController,
+              onSubmitted: (_) => submitData(),
               // onChanged: (value) {
               //   titleInput = value;
               // },
@@ -31,6 +43,8 @@ class NewTransaction extends StatelessWidget {
                 labelText: 'Amount',
               ),
               controller: amountController,
+              keyboardType: TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => submitData(),
               // onChanged: (value) {
               //   amountInput = value;
               // },
@@ -40,12 +54,7 @@ class NewTransaction extends StatelessWidget {
               style: TextButton.styleFrom(
                 primary: Colors.purple,
               ),
-              onPressed: () {
-                _addCallback(
-                  titleController.text,
-                  double.parse(amountController.text),
-                );
-              },
+              onPressed: submitData,
             ),
           ],
         ),
